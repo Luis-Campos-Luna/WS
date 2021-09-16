@@ -1,0 +1,96 @@
+/*Crear una aplicación Java para implementar la técnica de regresión lineal 
+Crear una aplicación Java para implementar la técnica de regresión lineal 
+simple (SLRmain); implementado durante las sesiones en línea. Debe adoptar un 
+enfoque orientado a objetos apropiado mediante la abstracción e implementación 
+de todas las clases auxiliares.
+@author Luis Isael Campos Luna 
+Instituto tecnologico José Mario Molina Pasquel y Henríquez 
+5 semestre, grupo B, T/M, 15/Sep/2021
+ */
+package a;
+import java.util.Scanner;
+
+public class SLR {
+    double[] x;
+    double[] y;
+    int n;          //número de datos
+    public double a, b;    //pendiente y ordenada en el origen o b0 y b1
+    Scanner teclado;
+
+    public void IngresarValores(){
+        teclado = new Scanner(System.in);
+        System.out.println("Recuerda que ¨x¨ es advertising y ¨y¨ es sales");
+        System.out.println("Ingrese la cantidad de valores a ingresar: ");
+        n=teclado.nextInt();
+        x = new double [n];
+        y = new double [n];
+        for (int i=0; i<n; i++){
+            System.out.println("Ingrese intervalo x: ");
+            x [i] = teclado.nextDouble();
+        }
+        for (int i=0; i<n; i++){
+            System.out.println("Ingrese intervalo y: ");
+            y [i] = teclado.nextDouble();
+        }
+    }
+    
+    public SLR(double[] x, double[] y) {
+        this.x=x;
+        this.y=y;
+    }
+    public void Regresionlineal(){
+        double pxy, sx, sy, sx2, sy2;
+        pxy=sx=sy=sx2=sy2=0.0;
+        for(int i=0; i<n; i++){
+            sx+=x[i];
+            sy+=y[i];
+            sx2+=x[i]*x[i];
+            sy2+=y[i]*y[i];
+            pxy+=x[i]*y[i];
+        }
+        b=(n*pxy-sx*sy)/(n*sx2-sx*sx);
+        a=(sy-b*sx)/n;
+        System.out.println("El resultado es:"+a+", "+b);
+    }
+    public void Regression(){
+        
+        int X; //variable de Advertaising para sacar Sales
+        double ŷ; 
+        System.out.println("ŷ = B0 + B1 xi");//Regression equation 
+        System.out.println("Ingresa x para sacar y"); //No se como hacer que salga bien la y
+        X=teclado.nextInt();
+        ŷ=a+b*X;
+        System.out.println("y = "+ŷ); //Sales = y
+    }
+    public double correlation(){
+        //Los valores medios
+        double suma=0.0;
+        for(int i=0; i<n; i++){
+            suma+=x[i];
+        }
+        double mediaX=suma/n;
+
+        suma=0.0;
+        for(int i=0; i<n; i++){
+            suma+=x[i];
+        }
+        double mediaY=suma/n;
+        //Los coeficiente de correlación
+        double pxy, sx2, sy2;
+        pxy=sx2=sy2=0.0;
+        for(int i=0; i<n; i++){
+            pxy+=(x[i]-mediaX)*(y[i]-mediaY);
+            sx2+=(x[i]-mediaX)*(x[i]-mediaX);
+            sy2+=(y[i]-mediaY)*(y[i]-mediaY);
+        }
+        return pxy/Math.sqrt(sx2*sy2);
+    }
+
+    public static void main(String[] args) {
+       double[]x =null  ,y = null;
+        SLR c = new SLR(x,y);
+        c.IngresarValores();
+        c.Regresionlineal();
+        c.Regression();
+    }
+}
